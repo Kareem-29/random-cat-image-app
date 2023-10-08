@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React ,{useEffect, useState} from 'react'
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export default function App() {
+  const [ImageUrl,setImageUrl]= useState("");
+  
+  useEffect(()=>{
+    callApi()
+  },[])
+
+const callApi = ()=>{
+  axios.get("https://api.thecatapi.com/v1/images/search").then((response)=>{
+    setImageUrl(response.data[0].url)
+  }).catch((error)=>{console.log(error)
+  })
 }
 
-export default App;
+
+
+  return (
+    <div>
+      <p>The image URL: {ImageUrl}</p>
+      <img src={ImageUrl} alt='cat' width={200} height={200}></img>
+      <br></br>
+      <button onClick={callApi}>New Image?</button>
+
+    </div>
+  )
+}
